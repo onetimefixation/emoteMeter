@@ -1,0 +1,11 @@
+{
+  "name": "emote_meter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "emote_meter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
