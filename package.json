@@ -1,11 +1,15 @@
 {
   "name": "emote_meter",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "emote_meter.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0"
+  }
 }

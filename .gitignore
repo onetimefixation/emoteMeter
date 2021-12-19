@@ -1,2 +1,4 @@
 .env
 Instructions.txt
+node_modules
+dotenv
