@@ -58,10 +58,10 @@ const client = new tmi.Client({
 		reconnect: true,
 		secure: true
 	},
-	identity: { username: 'astro_charles',
-		        password: 'oauth:5wbi0v5az77x59vv6c1kv2f11v7egz'
+	identity: { username: '',
+		        password: ''
 	},
-	channels: [ '#astro_charles' ]
+	channels: [ '' ]
 });
 client.connect().catch(console.error);
 client.on('message', (channel, tags, message, self) => {
