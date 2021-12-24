@@ -33,6 +33,14 @@ var totalPercentage = 0;
 var maxPercentage = 100;
 var trigger = 0;
 
+var currTime = new Date();
+var currMinute = currTime.getMinutes();
+var previousMinute = currMinute;
+var delayTime = 10000; // 10 secs
+var nextTime = currTime.getMinutes() + 5; // make 5 a param
+var timeoutID;
+var firstTime = 1;
+
 function setGaugeValue(gauge, gaugeshake, value) {
 
  totalEmotes = totalEmotes + value;
@@ -95,28 +103,62 @@ client.on('message', (channel, tags, message, self) => {
 		}
 	}
 
-//	length = all.length * .01;
+
 	length = all.length;
 	
 	setGaugeValue(gaugeElement, gauge_shakingElement, length);
 
+
+
+
+
+	resetTimer(nextTime);
+
+
+function resetTimer(nextTime){
 //	Timing
 //	======
-//	query the current Time
-var d = new Date(); // for now
-d.getHours(); // => 9
-d.getMinutes(); // =>  30
-d.getSeconds(); // => 5
+//	save the current minute plus the nexttime so we can set the setTimeout
+// if the setTimeout expires,
+//  1)  hide the component
+//   OPTIONAL: say "Tickle me"
+// otherwise, if the next emote is within the delayTime,
+//  1)clear the last setTimeout 
+//  2) reset the nextTime and send this new nextTime to the resettimer so it starts a new clock
 
-console.log(d);
+//if ( currMinute > nextTime)
+
+	//if not the first time then 
+
+	if (firstTime){
+		firstTime = 0;
+	}
+	else {
+		clearTimeout(timeoutID);
+		//console.log("TimeoutID: in the else", timeoutID)
+	}
+
+	// set a new timer
+	timeoutID = setTimeout(() => {
+		console.log("I'm going to sleep")
+		console.log("Need to disappear me")
+					}, delayTime); //10 sec for now
+				
+	//clearTimeout(timeoutID);
+
+//console.log("TimeoutID: ", timeoutID)
+//console.log("Current Minute ", currMinute);
+//console.log("Next Time ", nextTime);
+	return;			
+}
+
+
+//
+//
+//console.log (nextTime - currMinute)
 
 //	set timeout for currnt time + idle time (say 5 Mins)
-//	   if time expires 
-//		      say "tickle me"
-//			  then wait a minute, then dissapear the meter
-//	     
-//		 else 
-//		   <the idle timer should then be reset in setGaugeValue when new emote comes in
+
 	
 	if (trigger){
 		client.say(channel, `!boom`);        
