@@ -17,13 +17,25 @@
 //TODO:• Can we have the emotes that pop over screen overlay, as the emotes used in the stream itself?
 //TODO:
 
+//const dotenv = require('dotenv').config();
+
 const gaugeElement = document.querySelector(".gauge");
+const gaugeElement__hide = document.querySelector(".gauge__hide");
+
 const gauge_shakingElement = document.querySelector(".gaugeshake");
+const gauge_shakingElement__hide = document.querySelector(".gaugeshake__hide");
 
 gaugeElement.querySelector(".gauge__fill");
-gaugeElement.querySelector(".gauge__cover").textContent = `0%`
+gaugeElement.querySelector(".gauge__cover").textContent = `0%`;
+
+gaugeElement__hide.querySelector(".gauge__fill");
+gaugeElement__hide.querySelector(".gauge__cover").textContent = `0%`;
+
 gauge_shakingElement.querySelector(".gauge__fill");
-gauge_shakingElement.querySelector(".gauge__cover").textContent = `0%`
+gauge_shakingElement.querySelector(".gauge__cover").textContent = `0%`;
+
+gauge_shakingElement__hide.querySelector(".gauge__fill");
+gauge_shakingElement__hide.querySelector(".gauge__cover").textContent = `0%`;
 
 //import dotenv from 'dotenv';
 
@@ -41,7 +53,7 @@ var nextTime = currTime.getMinutes() + 5; // make 5 a param
 var timeoutID;
 var firstTime = 1;
 
-function setGaugeValue(gauge, gaugeshake, value) {
+function setGaugeValue(gauge, gauge__hide, gaugeshake,  gaugeshake__hide, value) {
 
  totalEmotes = totalEmotes + value;
  totalPercentage = totalEmotes / maxPercentage;
@@ -60,8 +72,14 @@ function setGaugeValue(gauge, gaugeshake, value) {
   gauge.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
   gauge.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
 
+  gauge__hide.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
+  gauge__hide.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
+
   gaugeshake.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
   gaugeshake.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
+
+  gaugeshake__hide.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
+  gaugeshake__hide.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
 
 };
 
@@ -71,10 +89,11 @@ const client = new tmi.Client({
 		reconnect: true,
 		secure: true
 	},
-	identity: { username: 
-		        password: 
+	identity: { username: '',
+		        password: process.env.AC_OAUTH_TOKEN
 	},
-	channels: [ '' ]
+	channels: [ '#' ]
+
 });
 
 client.connect().catch(console.error);
@@ -87,6 +106,10 @@ client.on('message', (channel, tags, message, self) => {
 		trigger = 0;
 		return;
 	};
+
+	if(tags.emotes == null){
+		return;
+	}
 
 	let all = [];
 	for (const key of Object.keys(tags.emotes)) {
@@ -106,10 +129,7 @@ client.on('message', (channel, tags, message, self) => {
 
 	length = all.length;
 	
-	setGaugeValue(gaugeElement, gauge_shakingElement, length);
-
-
-
+	setGaugeValue(gaugeElement, gaugeElement__hide, gauge_shakingElement, gauge_shakingElement__hide, length);
 
 
 	resetTimer(nextTime);
@@ -128,27 +148,36 @@ function resetTimer(nextTime){
 
 //if ( currMinute > nextTime)
 
-	//if not the first time then 
+	function fadeOutEffect() {
+	
+		var fadeEffect = setInterval(function () {
+			if (!gaugeElement__hide.style.opacity) {
+				gaugeElement__hide.style.opacity = 1;
+			}
+			if (gaugeElement__hide.style.opacity > 0) {
+				gaugeElement__hide.style.opacity -= 0.1;
+			} else {
+				clearInterval(fadeEffect);
+			}
+		}, 200);
+	}	
+
+
 
 	if (firstTime){
 		firstTime = 0;
 	}
-	else {
+	else {  // clear the last timer and set a new one below
 		clearTimeout(timeoutID);
-		//console.log("TimeoutID: in the else", timeoutID)
 	}
 
-	// set a new timer
+	
 	timeoutID = setTimeout(() => {
-		console.log("I'm going to sleep")
-		console.log("Need to disappear me")
-					}, delayTime); //10 sec for now
+			console.log("I'm going to sleep")
+			fadeOutEffect();
+		}, delayTime); //10 sec for now
 				
-	//clearTimeout(timeoutID);
 
-//console.log("TimeoutID: ", timeoutID)
-//console.log("Current Minute ", currMinute);
-//console.log("Next Time ", nextTime);
 	return;			
 }
 
