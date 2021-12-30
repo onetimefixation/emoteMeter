@@ -17,25 +17,15 @@
 //TODO:• Can we have the emotes that pop over screen overlay, as the emotes used in the stream itself?
 //TODO:
 
-//const dotenv = require('dotenv').config();
-
 const gaugeElement = document.querySelector(".gauge");
-const gaugeElement__hide = document.querySelector(".gauge__hide");
 
 const gauge_shakingElement = document.querySelector(".gaugeshake");
-const gauge_shakingElement__hide = document.querySelector(".gaugeshake__hide");
 
 gaugeElement.querySelector(".gauge__fill");
 gaugeElement.querySelector(".gauge__cover").textContent = `0%`;
 
-gaugeElement__hide.querySelector(".gauge__fill");
-gaugeElement__hide.querySelector(".gauge__cover").textContent = `0%`;
-
 gauge_shakingElement.querySelector(".gauge__fill");
 gauge_shakingElement.querySelector(".gauge__cover").textContent = `0%`;
-
-gauge_shakingElement__hide.querySelector(".gauge__fill");
-gauge_shakingElement__hide.querySelector(".gauge__cover").textContent = `0%`;
 
 //import dotenv from 'dotenv';
 
@@ -52,8 +42,9 @@ var delayTime = 10000; // 10 secs
 var nextTime = currTime.getMinutes() + 5; // make 5 a param
 var timeoutID;
 var firstTime = 1;
+var guageIsFadedOut = 0;
 
-function setGaugeValue(gauge, gauge__hide, gaugeshake,  gaugeshake__hide, value) {
+function setGaugeValue(gauge, gaugeshake, value) {
 
  totalEmotes = totalEmotes + value;
  totalPercentage = totalEmotes / maxPercentage;
@@ -69,32 +60,48 @@ function setGaugeValue(gauge, gauge__hide, gaugeshake,  gaugeshake__hide, value)
 
 
  // gauge.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes * .01) / 2}turn)`;
-  gauge.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
-  gauge.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
+  //gauge.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
+  //gauge.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
 
-  gauge__hide.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
-  gauge__hide.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
+  //gaugeshake.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
+  //gaugeshake.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
 
-  gaugeshake.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
-  gaugeshake.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
 
-  gaugeshake__hide.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
-  gaugeshake__hide.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
+// check if the shaking count has been reached.
+// if so swith the visibility of the two meters
+//
+
+if (totalEmotes >= 10) {
+
+// This needs to change because opacity still takes up space.
+
+	//gaugeElement.style.opacity = 0; 
+console.log("I am here")
+console.log("total Emotes in here: ", totalEmotes);
+// *********************************************************
+
+document.getElementById("showGauge").style.display = "none";
+document.getElementById("showShake").style.display = "";
+
+gaugeshake.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
+gaugeshake.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
+
+}
+
+else {
+ // gauge.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes * .01) / 2}turn)`;
+ gauge.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
+ gauge.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
+
+ gaugeshake.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * (1.8)}deg)`;
+ gaugeshake.querySelector(".gauge__cover").textContent = `${Math.round(totalPercentage * 100)}%`;
+ document.getElementById("showShake").style.display = "none";
+
+}
 
 };
 
-const client = new tmi.Client({
-	options: { debug: true, messagesLogLevel: "info" },
-	connection: {
-		reconnect: true,
-		secure: true
-	},
-	identity: { username: '',
-		        password: process.env.AC_OAUTH_TOKEN
-	},
-	channels: [ '#' ]
-
-});
+//*********************  Goes Here ****************/
 
 client.connect().catch(console.error);
 client.on('message', (channel, tags, message, self) => {
@@ -129,7 +136,7 @@ client.on('message', (channel, tags, message, self) => {
 
 	length = all.length;
 	
-	setGaugeValue(gaugeElement, gaugeElement__hide, gauge_shakingElement, gauge_shakingElement__hide, length);
+	setGaugeValue(gaugeElement, gauge_shakingElement, length);
 
 
 	resetTimer(nextTime);
@@ -146,18 +153,17 @@ function resetTimer(nextTime){
 //  1)clear the last setTimeout 
 //  2) reset the nextTime and send this new nextTime to the resettimer so it starts a new clock
 
-//if ( currMinute > nextTime)
-
 	function fadeOutEffect() {
 	
 		var fadeEffect = setInterval(function () {
-			if (!gaugeElement__hide.style.opacity) {
-				gaugeElement__hide.style.opacity = 1;
+			if (!gaugeElement.style.opacity) {  
+				gaugeElement.style.opacity = 1;  
 			}
-			if (gaugeElement__hide.style.opacity > 0) {
-				gaugeElement__hide.style.opacity -= 0.1;
+			if (gaugeElement.style.opacity > 0) {  
+				gaugeElement.style.opacity -= 0.1; 
 			} else {
 				clearInterval(fadeEffect);
+				guageIsFadedOut = 1;
 			}
 		}, 200);
 	}	
@@ -169,6 +175,12 @@ function resetTimer(nextTime){
 	}
 	else {  // clear the last timer and set a new one below
 		clearTimeout(timeoutID);
+		if (guageIsFadedOut){
+			//fade it back in ***************************************************
+			gaugeElement.style.opacity = 1;  
+
+			
+		}  // *******************************************************************
 	}
 
 	
@@ -181,10 +193,6 @@ function resetTimer(nextTime){
 	return;			
 }
 
-
-//
-//
-//console.log (nextTime - currMinute)
 
 //	set timeout for currnt time + idle time (say 5 Mins)
 
@@ -199,8 +207,3 @@ function resetTimer(nextTime){
 	}
 
 });
-
-
-
-
-

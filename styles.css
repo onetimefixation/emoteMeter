@@ -4,9 +4,9 @@
     font-family: "Roboto", sans-serif;
     font-size: 32px;
     color: #004033;
-    animation: fadeInAnimation ease 5s;
+    /* animation: fadeInAnimation ease 5s;
     animation-iteration-count: 1;
-    animation-fill-mode: forwards;
+    animation-fill-mode: forwards; */
   }
 
   .gauge__hide {
@@ -17,16 +17,20 @@
    color: #004033;
  }
 
+.hide {
+   visibility: hidden;
+}
+
+
+
   .gaugeshake{
     width: 100%;
     max-width: 250px;
     font-family: "Roboto", sans-serif;
     font-size: 32px;
     color: #004033;
-    animation: fadeInAnimation ease 5s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    animation:shake 700ms infinite;
+    /* display: none; */
+    animation: shake 700ms infinite;
   }
 
   .gaugeshake__hide{
@@ -35,7 +39,7 @@
     font-family: "Roboto", sans-serif;
     font-size: 32px;
     color: #004033;
-    animation:shake 700ms infinite;
+    animation: shake 700ms infinite;
   }
 
   .gauge__body {
