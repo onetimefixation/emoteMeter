@@ -17,11 +17,9 @@
    color: #004033;
  }
 
-.hide {
+/* .hide {
    visibility: hidden;
-}
-
-
+} */
 
   .gaugeshake{
     width: 100%;
@@ -29,7 +27,7 @@
     font-family: "Roboto", sans-serif;
     font-size: 32px;
     color: #004033;
-    /* display: none; */
+    display: none;
     animation: shake 700ms infinite;
   }
 
@@ -82,6 +80,13 @@
     box-sizing: border-box;
   }
   
+  .pulse {
+   color: "FF0000";
+   animation: pulsate 1s ease-out;
+   animation-iteration-count: 20; 
+   opacity: 0.9;
+}
+
   @keyframes shake {
     0% {
        transform: rotate(10deg);
@@ -137,4 +142,10 @@
    100% {
        opacity: 1;
     }
+}
+
+@keyframes pulsate {
+   0% { opacity: 0.3; }
+   50% { opacity: 1.0; }
+   100% { opacity: 0.3; }
 }
