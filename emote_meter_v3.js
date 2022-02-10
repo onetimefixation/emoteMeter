@@ -140,11 +140,22 @@ if (percentageOfEmotes > 1){
 	percentageOfEmotes = 1;
 }
 
-console.log(meterRotationMultiplier);
- 
-gauge.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * ((1.8) * meterRotationMultiplier) }deg)`;
-gauge.querySelector(".gauge__cover").textContent = `${Math.round(percentageOfEmotes * 100)}%`;
 
+ 
+if (percentageOfEmotes <= .9){
+console.log("% of emotes = ", percentageOfEmotes);
+console.log ("Rotation = ", (totalEmotes) * ((1.8) * meterRotationMultiplier));
+
+    gauge.querySelector(".gauge__fill").style.transform = `rotate(${(totalEmotes) * ((1.8) * meterRotationMultiplier) }deg)`;
+    gauge.querySelector(".gauge__cover").textContent = `${Math.round(percentageOfEmotes * 100)}%`;
+}
+else {
+	console.log ("FinalMeterRotationMultiper", meterRotationMultiplier);
+	console.log ("FinalRotation = ", (totalEmotes) * ((1.8) * meterRotationMultiplier));
+	const finalRotation = (totalEmotes) * ((1.8) * meterRotationMultiplier);
+	gauge.querySelector(".gauge__fill").style.transform = `rotate(180deg)`;
+    gauge.querySelector(".gauge__cover").textContent = `${Math.round(percentageOfEmotes * 100)}%`;
+}
 
 
 // ********************    first time through    *******************
@@ -190,9 +201,18 @@ else {    // shake code
 //*********************  Ends Here ****************/
 
 //*********************  Goes Here ****************/
+const client = new tmi.Client({
+	options: { debug: true, messagesLogLevel: "info" },
+	connection: {
+		reconnect: true,
+		secure: true
+	},
+	identity: { username: 'astro_charles',
+		        password: 'oauth:5wbi0v5az77x59vv6c1kv2f11v7egz'
+	},
+	channels: [ '#astro_charles' ]
 
-
-
+});
 //*********************  Ends Here ****************/
 
 client.connect().catch(console.error);
