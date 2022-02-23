@@ -216,18 +216,7 @@ function setGaugeValue(gauge, gaugeshake, value) {
 //*********************  Ends Here ****************/
 
 //*********************  Goes Here ****************/
-const client = new tmi.Client({
-	options: { debug: true, messagesLogLevel: 'info' },
-	connection: {
-		reconnect: true,
-		secure: true
-	},
-	identity: {
-		username: 'astro_charles',
-		password: 'oauth:5wbi0v5az77x59vv6c1kv2f11v7egz'
-	},
-	channels: [ '#astro_charles' ]
-});
+
 //*********************  Ends Here ****************/
 
 client.connect().catch(console.error);
