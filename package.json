@@ -2,7 +2,7 @@
   "name": "emote_meter",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
+  "description": "Used by viewers to spam emotes in chat\r When the chat reaches a certain threshold, this will trigger a \"!boom\" command\r This command spams a predefined overlay with emotes",
   "main": "emote_meter.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^10.0.0"
-  }
+    "dotenv": "^10.0.0",
+    "help": "^3.0.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onetimefixation/emotemeter2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/onetimefixation/emotemeter2/issues"
+  },
+  "homepage": "https://github.com/onetimefixation/emotemeter2#readme"
 }

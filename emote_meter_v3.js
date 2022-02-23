@@ -35,13 +35,14 @@
 // **********************************  YOU CAN CHANGE THESE  ********************************* //
 // ******************************************************************************************* //
 // ******************************************************************************************* //
-//
+//                                                                                             //
 const totalEmotesAllowed = 20; // total number of emotes needed to get to 100%
 var max_Emotes_Accepted_Per_Message = 10; // only recognize thse many emotes per message per user
 var startToWiggle = 80; // functionality disabled
 var marqueeTimer = 11000; // time in millisecs for train emotes to run e.g. 11000 = 11 secs
-var delayTime = 20000; // 1 sec = 1000 , 20 sec = 20000           //
-//
+var delayTime = 60000; // 1 sec = 1000 , 30 sec = 30000                                        //
+const endMessage = "message"                                                // 
+//                                                                                             //
 // ******************************************************************************************* //
 // ******************************************************************************************* //
 // ******************************************************************************************* //
@@ -148,9 +149,24 @@ function setGaugeValue(gauge, gaugeshake, value) {
 			console.log('% of emotes = ', percentageOfEmotes);
 			console.log('Rotation = ', totalEmotes * (1.8 * meterRotationMultiplier));
 
-			gauge.querySelector('.gauge__fill').style.transform = `rotate(${totalEmotes *
-				(1.8 * meterRotationMultiplier)}deg)`;
-			gauge.querySelector('.gauge__cover').innerHTML = `${Math.round(percentageOfEmotes * 100)}% <br/> newline`;
+			gauge.querySelector('.gauge__fill').style.transform = `rotate(${totalEmotes * (1.8 * meterRotationMultiplier)}deg)`;
+			var deadline = new Date().getTime() + delayTime;
+			
+			if (firstTime){			
+			var x = setInterval(function() {
+			var now = new Date().getTime();
+			var t = deadline - now;
+			var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+			var seconds = Math.floor((t % (1000 * 60)) / 1000);
+			if (t < 0) {
+				clearInterval(x);
+				gauge.querySelector(".gauge__cover").innerHTML = endMessage;
+			}
+			//gauge.querySelector('.gauge__cover').innerHTML = `${Math.round(percentageOfEmotes * 100)}%`;
+			//gauge.querySelector('.gauge__cover').innerHTML = `${Math.round(percentageOfEmotes * 100)}% <br/> ${minutes}:${seconds}`;
+				}, 1000);
+			}
+			gauge.querySelector('.gauge__cover').innerHTML = `${Math.round(percentageOfEmotes * 100)}%`;
 		} else {
 			console.log('FinalMeterRotationMultiper', meterRotationMultiplier);
 			console.log('FinalRotation = ', totalEmotes * (1.8 * meterRotationMultiplier));
