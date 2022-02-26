@@ -35,12 +35,12 @@
 // ******************************************************************************************* //
 // ******************************************************************************************* //
 //                                                                                             //
-const totalEmotesAllowed = 20; // total number of emotes needed to get to 100%
+const totalEmotesAllowed = 20; // total number of emotes needed to get to 100%                 //
 var max_Emotes_Accepted_Per_Message = 10; // only recognize thse many emotes per message per user
-var startToWiggle = 80; // functionality disabled
+var startToWiggle = 80; // functionality disabled                                              //
 var marqueeTimer = 11000; // time in millisecs for train emotes to run e.g. 11000 = 11 secs
 var delayTime = 60000; // 1 sec = 1000 , 30 sec = 30000                                        //
-const endMessage = "message"                                                // 
+const endMessage = "message"                                                                   // 
 //                                                                                             //
 // ******************************************************************************************* //
 // ******************************************************************************************* //
@@ -214,13 +214,28 @@ function setGaugeValue(gauge, gaugeshake, value) {
 //});
 //*********************  Ends Here ****************/
 
-//*********************  Goes Here ****************/
 
-//*********************  Ends Here ****************/
 
 client.connect().catch(console.error);
 client.on('message', (channel, tags, message, self) => {
 	if (self) return;
+
+	console.log(tags);
+
+var validUser;
+	if (message.toLowerCase() === '!starthype' || message.toLowerCase() === '!stophype' || message.toLowerCase() === '!boom') {
+
+		if (tags.badges && (tags.badges.broadcaster || tags.badges.moderator)){
+		 validUser = 1;
+	    }
+		else {
+		validUser = 0;
+		}
+		if (!validUser){
+		return;
+	  }
+	
+	}
 
 	if (message.toLowerCase() === '!starthype' && !active) {
 		//value = 0;
