@@ -199,22 +199,13 @@ function setGaugeValue(gauge, gaugeshake, value) {
 	}
 }
 
+
 //*********************  Goes Here ****************/
-//const client = new tmi.Client({
-//	options: { debug: true, messagesLogLevel: "info" },
-//	connection: {
-//		reconnect: true,
-//		secure: true
-//	},
-//	identity: { username: 'twitch username',
-//		        password: 'twitch oauth code'
-//	},
-//	channels: [ '#twitch channel' ]
 
-//});
+
+
+
 //*********************  Ends Here ****************/
-
-
 
 client.connect().catch(console.error);
 client.on('message', (channel, tags, message, self) => {
